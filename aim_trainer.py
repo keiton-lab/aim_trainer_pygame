@@ -1,7 +1,6 @@
 import pygame
 import random
 from sys import exit
-from pygame.math import Vector2
 
 pygame.init()
 width = 1024
@@ -12,7 +11,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Aim Trainer')
 # clock object to set the frame rate in the game loop
 clock = pygame.time.Clock()
-# hide window cursor
+# hide window cursor when in game
 pygame.mouse.set_visible(False)
 # score board text font
 font = pygame.font.SysFont('Times', 25)
@@ -31,8 +30,10 @@ class TARGET:
         pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 5)
 
     def re_generate_target(self):
+        # random pick the location when hitting the target or after certain time frame
         self.x = random.randint(30, width - 50)
         self.y = random.randint(55, height - 10)
+        # store the x and y position of the target
         self.pos = (self.x, self.y)
 
 
@@ -46,9 +47,11 @@ class CROSSHAIR(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def firing(self):
+        # when press the mouse button, play the shooting sound
         self.fire.play()
 
     def update(self):
+        # center the mouse cursor to the image of the rectangle
         self.rect.center = pygame.mouse.get_pos()
 
 
@@ -61,6 +64,7 @@ class MAIN:
 
     def check_hit(self):
         self.total_shot += 1
+        # once mouse was press, check the mouse position and target position, and compare to check hit or not
         x, y = pygame.mouse.get_pos()
         x_t, y_t = target.pos
         # setting the hit-box, which is around 6 pixels within the target
@@ -69,6 +73,7 @@ class MAIN:
             self.hit += 1
 
     def score_board(self):
+        # to avoid zero division error, try following first
         try:
             accuracy = round(self.hit*100 / self.total_shot, 2)
         except:
