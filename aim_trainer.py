@@ -60,13 +60,16 @@ class MAIN:
     def __init__(self):
         pass
 
-    # function to check if mouse click on target
-    def check_click(self):
+    def score_board(self):
         pass
 
     def track_max(self):
-        with open("highest_score.txt", "r") as f:
-            return f.read()
+        pass
+        #with open("highest_score.txt", "r") as f:
+        #    return f.read()
+    def target_timer(self):
+        pass
+    def paused(self):
         pass
 
 target = TARGET()
@@ -95,5 +98,4 @@ while True:
     crosshair_group.update()
 
     pygame.display.update()
-    # for FPS game, frame rate higher the better
-    clock.tick(300)
+    clock.tick(60)
