@@ -21,8 +21,6 @@ There are several things to keep in mind if you want to change the gameplay:
 <img src="screen_shots/screenshot_7.png" width="600">
 
  * SPACE key is the default paused command.
-<img src="screen_shots/screenshot_1.png" width="600">
-
  * Default firing sound is obtained from CSGO, handgun: USPS
    - you can change the firing sound and crosshair pic on LINE 59 and 60 by loading different files.
 <img src="screen_shots/screenshot_6.png" width="600">
