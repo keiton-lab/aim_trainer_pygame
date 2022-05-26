@@ -14,22 +14,35 @@ clock = pygame.time.Clock()
 # hide window cursor when in game
 pygame.mouse.set_visible(False)
 # score board text font
-font = pygame.font.SysFont('Times', 25)
+font = pygame.font.SysFont("times", 25)
 
 
 class TARGET:
     def __init__(self):
-        self.re_generate_target()
+        self.re_generate_position()
+        self.crosshair_size = 1
+
+    def make_reference_center(self):
+        # center of the window as reference point
+        pygame.draw.circle(screen, (0, 0, 0), (width / 2, height / 2), 4)
 
     def make_target(self):
-        # center of the window as reference point
-        pygame.draw.circle(screen, (0, 0, 0), (width/2, height/2), 4)
-        # outline of the red dot
-        pygame.draw.circle(screen, (0, 0, 0), (self.x, self.y), 7, 2)
-        # center of the red dot
-        pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 5)
+        if self.crosshair_size == 1:
+            # outline of the red dot
+            pygame.draw.circle(screen, (0, 0, 0), (self.x, self.y), 7, 2)
+            # center of the red dot
+            pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 5)
+        elif self.crosshair_size == 2:
+            pygame.draw.circle(screen, (0, 0, 0), (self.x, self.y), 13, 2)
+            pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 11)
+        elif self.crosshair_size == 3:
+            pygame.draw.circle(screen, (0, 0, 0), (self.x, self.y), 19, 2)
+            pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 17)
+        else:
+            pygame.draw.circle(screen, (0, 0, 0), (self.x, self.y), 7, 2)
+            pygame.draw.circle(screen, (255, 10, 10), (self.x, self.y), 5)
 
-    def re_generate_target(self):
+    def re_generate_position(self):
         # random pick the location when hitting the target or after certain time frame
         self.x = random.randint(30, width - 50)
         self.y = random.randint(55, height - 10)
@@ -69,7 +82,7 @@ class MAIN:
         x_t, y_t = target.pos
         # setting the hit-box, which is around 6 pixels within the target
         if x_t - 3 <= x <= x_t + 3 and y_t - 3 <= y <= y_t + 3:
-            target.re_generate_target()
+            target.re_generate_position()
             self.hit += 1
 
     def score_board(self):
@@ -94,6 +107,7 @@ class MAIN:
         # adding a paused function into the game
         paused = True
         while paused:
+            screen.fill((133, 132, 138))
             # capturing all the event during paused
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -102,22 +116,76 @@ class MAIN:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         paused = False
-                    elif event.key == pygame.K_q:
+                    if event.key == pygame.K_q:
                         pygame.quit()
                         exit()
-            # during paused, display information on the screen to guide player
+                    if event.key == pygame.K_c:
+                        paused = False
+                        self.crosshair_change_menu()
 
+            # during paused, display information on the screen to guide player
             text_1 = "GAME PAUSED"
-            text_2 = "Press  Q  to quit game"
-            text_3 = "Press Space to resume game"
+            text_2 = "Press SPACE to resume game"
+            text_3 = "Press C to change target size"
+            text_4 = "Press Q to quit game"
+
+            text_surf_1 = font.render(text_1, True, (0, 0, 0))
+            text_surf_2 = font.render(text_2, True, (0, 0, 0))
+            text_surf_3 = font.render(text_3, True, (0, 0, 0))
+            text_surf_4 = font.render(text_4, True, (0, 0, 0))
+
+            text_rect_1 = text_surf_1.get_rect(center=(512, 300))
+            text_rect_2 = text_surf_2.get_rect(center=(512, 385))
+            text_rect_3 = text_surf_3.get_rect(center=(512, 415))
+            text_rect_4 = text_surf_4.get_rect(center=(512, 445))
+
+            screen.blit(text_surf_1, text_rect_1)
+            screen.blit(text_surf_2, text_rect_2)
+            screen.blit(text_surf_3, text_rect_3)
+            screen.blit(text_surf_4, text_rect_4)
+
+            pygame.display.update()
+            clock.tick(30)
+
+    def crosshair_change_menu(self):
+        paused = True
+        while paused:
+            screen.fill((255, 255, 255))
+            # capturing all the event during paused
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w:
+                        target.crosshair_size = 1
+                        paused = False
+                    if event.key == pygame.K_e:
+                        target.crosshair_size = 2
+                        paused = False
+                    if event.key == pygame.K_r:
+                        target.crosshair_size = 3
+                        paused = False
+
+            text_1 = "Press W for small size target"
+            pygame.draw.circle(screen, (255, 10, 10), (695, 300), 5)
+            pygame.draw.circle(screen, (0, 0, 0), (695, 300), 7, 2)
+
+            text_2 = "Press E for medium size target"
+            pygame.draw.circle(screen, (255, 10, 10), (695, 355), 11)
+            pygame.draw.circle(screen, (0, 0, 0), (695, 355), 13, 2)
+
+            text_3 = "Press R for large size target"
+            pygame.draw.circle(screen, (255, 10, 10), (695, 405), 17)
+            pygame.draw.circle(screen, (0, 0, 0), (695, 405), 19, 2)
 
             text_surf_1 = font.render(text_1, True, (0, 0, 0))
             text_surf_2 = font.render(text_2, True, (0, 0, 0))
             text_surf_3 = font.render(text_3, True, (0, 0, 0))
 
-            text_rect_1 = text_surf_1.get_rect(center=(512, 340))
-            text_rect_2 = text_surf_2.get_rect(center=(512, 415))
-            text_rect_3 = text_surf_3.get_rect(center=(512, 445))
+            text_rect_1 = text_surf_1.get_rect(center=(512, 300))
+            text_rect_2 = text_surf_2.get_rect(center=(512, 355))
+            text_rect_3 = text_surf_3.get_rect(center=(512, 405))
 
             screen.blit(text_surf_1, text_rect_1)
             screen.blit(text_surf_2, text_rect_2)
@@ -150,7 +218,7 @@ while True:
             crosshair.firing()
             main.check_hit()
         if event.type == re_position_target:
-            target.re_generate_target()
+            target.re_generate_position()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 main.paused()
@@ -158,6 +226,7 @@ while True:
     # setting the background of the training ground
     screen.fill((133, 132, 138))
 
+    target.make_reference_center()
     target.make_target()
     crosshair_group.draw(screen)
     crosshair_group.update()
