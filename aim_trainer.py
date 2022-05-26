@@ -58,7 +58,7 @@ class CROSSHAIR(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load('crosshair/crosshair.png')
         self.fire = pygame.mixer.Sound('fire_sound/usp1.wav')
-        self.fire.set_volume(0.05)
+        self.fire.set_volume(0.08)
         self.image = pygame.transform.scale(self.image, (25, 25))
         self.rect = self.image.get_rect()
 
@@ -228,7 +228,7 @@ crosshair_group.add(crosshair)
 # setting timer for target, default 3500 ticks == 3.5 seconds.
 # target will re-position after 3.5 seconds if without hit
 re_position_target = pygame.USEREVENT
-pygame.time.set_timer(re_position_target, 350000)
+pygame.time.set_timer(re_position_target, 3500)
 
 # game loop
 while True:
