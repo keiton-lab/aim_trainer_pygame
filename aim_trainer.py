@@ -119,7 +119,6 @@ class MAIN:
         # adding a paused function into the game
         paused = True
         while paused:
-            screen.fill((133, 132, 138))
             # capturing all the event during paused
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -146,10 +145,10 @@ class MAIN:
             text_surf_3 = font.render(text_3, True, (0, 0, 0))
             text_surf_4 = font.render(text_4, True, (0, 0, 0))
 
-            text_rect_1 = text_surf_1.get_rect(center=(512, 300))
-            text_rect_2 = text_surf_2.get_rect(center=(512, 385))
-            text_rect_3 = text_surf_3.get_rect(center=(512, 415))
-            text_rect_4 = text_surf_4.get_rect(center=(512, 445))
+            text_rect_1 = text_surf_1.get_rect(center=(512, 320))
+            text_rect_2 = text_surf_2.get_rect(center=(512, 405))
+            text_rect_3 = text_surf_3.get_rect(center=(512, 435))
+            text_rect_4 = text_surf_4.get_rect(center=(512, 465))
 
             screen.blit(text_surf_1, text_rect_1)
             screen.blit(text_surf_2, text_rect_2)
